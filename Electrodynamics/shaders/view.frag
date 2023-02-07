@@ -48,7 +48,6 @@ vec3 complexToColour(float re, float im) {
 void main() {
     vec4 w = texture2D(waveFuncTex, UV);
     vec4 p = texture2D(potentialTex, UV);
-    float absVal = sqrt(w[0]*w[0] + w[1]*w[1] + w[2]*w[2] + w[3]*w[3]);
-    fragColor = vec4(absVal*complexToColour(w[0], w[1]) + p[3]/200.0,
-                     absVal);
+    float absVal = sqrt(w[0]*w[0] + w[1]*w[1]);
+    fragColor = vec4(absVal*complexToColour(w[0], w[1]) + p[3]/200.0, 1.0);
 }

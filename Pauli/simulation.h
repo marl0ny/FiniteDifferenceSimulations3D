@@ -28,6 +28,7 @@ struct SimPrograms {
     GLuint harmonic_oscillator;
     GLuint symmetric_potential;
     GLuint init_boundary;
+    GLuint spin_expectation;
 };
 
 struct SimFrames {
@@ -86,6 +87,9 @@ void transpose(GLuint transpose_program,
 void translate(GLuint translate_program, frame_id dst, frame_id src,
                double rx, double ry, double rz,
                const struct TextureDimensions *tex_dimensions);
+
+void spin_expectation(GLuint spin_expectation_program,
+                      frame_id dst, frame_id src);
 
 void step(const SimFrames *frames, const SimPrograms *programs,
           const SimParams *params);

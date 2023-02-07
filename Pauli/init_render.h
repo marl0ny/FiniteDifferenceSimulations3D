@@ -3,7 +3,11 @@
 
 
 struct RenderParams {
-
+    int user_use;
+    double user_dx, user_dy;
+    double user_x, user_y;
+    double user_scroll;
+    int which;
 };
 
 

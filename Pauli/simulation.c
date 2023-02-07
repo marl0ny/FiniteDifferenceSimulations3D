@@ -40,6 +40,8 @@ void init_sim_programs(SimPrograms *programs) {
         = make_quad_program("./shaders/matrix4-transform.frag");
     programs->hmat2_transform
         = make_quad_program("./shaders/hmat2-transform.frag");
+    programs->spin_expectation
+        = make_quad_program("./shaders/spin-expectation.frag");
 }
 
 void init_sim_params(SimParams *params) {
@@ -282,6 +284,19 @@ void translate(GLuint translate_program, frame_id dst, frame_id src,
     set_ivec2_uniform("texelDimensions2D",
                       tex_dimensions->width_2d,
                       tex_dimensions->height_2d);
+    draw_unbind_quad();
+}
+
+void spin_expectation(GLuint spin_expectation_program,
+                      frame_id dst, frame_id src) {
+    bind_quad(dst, spin_expectation_program);
+    double complex sigma_x[2][2] = {{0.0, 1.0}, {1.0, 0.0}};
+    double complex sigma_y[2][2] = {{0.0, -I}, {I, 0.0}};
+    double complex sigma_z[2][2] = {{1.0, 0.0}, {0.0, -1.0}};
+    set_sampler2D_uniform("tex", src);
+    set_hmat2_uniform("sigmaX", (double complex *)&sigma_x[0][0]);
+    set_hmat2_uniform("sigmaY", (double complex *)&sigma_y[0][0]);
+    set_hmat2_uniform("sigmaZ", (double complex *)&sigma_z[0][0]);
     draw_unbind_quad();
 }
 
