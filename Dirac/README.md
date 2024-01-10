@@ -1,6 +1,6 @@
 # 3D Dirac Simulation
 
-This simulation numerically solves the single particle Dirac equation in 3D with periodic boundary conditions, either in free space or with arbitrary four vector potentials. Currently only 2D slices or a rudimentary 3D vector field view has been implemented, and a proper 3D render has yet to be made.
+This simulation numerically solves the single particle Dirac equation in 3D with periodic boundary conditions, either in free space or with arbitrary four vector potentials. Currently only 2D slices or a rudimentary 3D vector field view have been implemented, and a proper 3D render has yet to be made.
 
 ### Method Used
 
