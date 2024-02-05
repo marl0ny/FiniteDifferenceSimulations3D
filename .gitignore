@@ -1,3 +1,5 @@
+*.o
+program
 *.clangd
 *.DS_Store
 *~

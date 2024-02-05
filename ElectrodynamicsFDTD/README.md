@@ -1,7 +1,6 @@
 # FDTD Maxwell Simulation in 3D
 
-WIP simulation of Maxwell's equation in 3D. Currently only restricted to free space
-and periodic solutions.
+[Very basic WIP simulation](https://marl0ny.github.io/FiniteDifferenceSimulations3D/ElectrodynamicsFDTD/index.html) of Maxwell's equation in 3D. Currently only restricted to free space and periodic solutions.
 
 ## References
 - Taflove A., Hagness S. (2000). Introduction to Maxwell's Equations and the Yee Algorithm. 

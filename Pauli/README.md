@@ -1,6 +1,6 @@
 # Numerical solutions to the Pauli equation in 3D
 
-This simulation shows a particle interacting with a uniform magnetic field. Currently only 2D slices are displayed, as a full 3D render has yet to be implemented. Use the up and down key to change which slice to display.
+This [simulation](https://marl0ny.github.io/FiniteDifferenceSimulations3D/Pauli/index.html) shows a particle interacting with a uniform magnetic field. Currently only 2D slices are displayed, as a full 3D render has yet to be implemented. Use the up and down key to change which slice to display.
 
 ## Method used
 

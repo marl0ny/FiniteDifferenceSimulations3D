@@ -1,48 +1,43 @@
 SHELL = /bin/bash
 FLAGS = -O0 -Wall -g
-# COMPILE = gcc
-COMPILE = clang
+C_COMPILE = clang
+CPP_COMPILE = clang++ -std=c++14
+LINKER = /usr/bin/ld
 
-# For Linux the prerequisite installs are OpenGL with GLEW and GLFW.
-ifeq ($(shell uname), Linux)
+ifeq ($(shell uname),Darwin)
+INCLUDE =  -I${PWD} -I${PWD}/gl_wrappers -I/opt/homebrew/include
+LIBS = -ldl -L/opt/homebrew/lib -lglfw\
+       -framework CoreVideo -framework OpenGL -framework IOKit\
+       -framework Cocoa -framework Carbon
+else
 INCLUDE =  -I${PWD} -I${PWD}/gl_wrappers
 LIBS = -lm -lGL -lGLEW -lglfw
 endif
 
-# For MacOS you must first install the relavent OpenGL and GLFW libraries.
-# If you installed the libraries through Homebrew you will probably first
-# need to know the location of the Homebrew developement files, which varies
-# from installation to installation, and then edit the INCLUDE and LIBS
-# variables accordingly.
-ifeq ($(shell uname),Darwin)
-INCLUDE =  -I${PWD} -I${PWD}/gl_wrappers -I/opt/homebrew/include\
-					 -I/usr/local/include
-LIBS = -ldl -L/opt/homebrew/lib -L/usr/local/include -lglfw\
-       -framework CoreVideo -framework OpenGL -framework IOKit\
-       -framework Cocoa -framework Carbon
-endif
-
-WEB_INCLUDE = ${INCLUDE} -I${HOME}/emsdk/upstream/emscripten/system/include  
+# Make sure to source <emcc_location>/emsdk/emsdk_env.sh first!
+WEB_TARGET = main.js
 
 TARGET = ${PWD}/program
-WEB_TARGET = main.js
-SOURCES = ${PWD}/gl_wrappers/gl_wrappers.c fft_gl.c simulation.c\
-			 init_render.c main.c
-OBJECTS = gl_wrappers.o fft_gl.o simulation.o init_render.o main.o
+C_SOURCES = ${PWD}/gl_wrappers/gl_wrappers.c fft_gl.c init_render.c\
+	simulation.c
+CPP_SOURCES = main.cpp
+SOURCES = ${C_SOURCES} ${CPP_SOURCES}
+OBJECTS = gl_wrappers.o fft_gl.o init_render.o simulation.o main.o
+SHADERS = ./shaders/*
 
 
 all: ${TARGET}
 
-${TARGET}: ${OBJECTS}
-	${COMPILE} ${FLAGS} -o $@ $^ ${LIBS}
+${TARGET}: ${OBJECTS} ${SHADERS}
+	${CPP_COMPILE} ${FLAGS} -o $@ ${OBJECTS} ${LIBS}
 
-${WEB_TARGET}: ${SOURCES}
-	EMCC_DEBUG=1
-	emcc -o $@ $^ ${INCLUDE} -v -s WASM=1 -s USE_GLFW=3 -s FULL_ES3=1 \
-    -s TOTAL_MEMORY=100MB --embed-file shaders
+${WEB_TARGET}: ${SOURCES} ${SHADERS}
+	emcc -o $@ ${SOURCES} ${INCLUDE} -v -s WASM=1 -s USE_GLFW=3 -s FULL_ES3=1 \
+	-s TOTAL_MEMORY=100MB -s LLD_REPORT_UNDEFINED --embed-file shaders
 
-${OBJECTS}: ${SOURCES}	
-	${COMPILE} ${FLAGS} -c $^ ${INCLUDE}
+${OBJECTS}: ${C_SOURCES} ${CPP_SOURCES}
+	${C_COMPILE} ${FLAGS} -c ${C_SOURCES} ${INCLUDE}
+	${CPP_COMPILE} ${FLAGS} -c ${CPP_SOURCES} ${INCLUDE}
 
 clean:
-	rm -f *.o *.js *.wasm ${TARGET}
+	rm -f *.o ${TARGET} *.wasm *.js

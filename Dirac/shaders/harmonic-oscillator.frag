@@ -29,7 +29,7 @@ vec3 to3DTextureCoordinates(vec2 uv) {
     float hStack = float(height2D)/float(height3D);
     float wIndex = floor(uv[1]*hStack)*wStack + floor(uv[0]*wStack);
     return vec3(mod(uv[0]*wStack, 1.0), mod(uv[1]*hStack, 1.0),
-                (wIndex + 0.5)/length3D);
+                (wIndex + 0.5)/float(length3D));
 }
 
 void main() {

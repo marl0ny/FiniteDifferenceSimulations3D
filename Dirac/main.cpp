@@ -3,9 +3,20 @@
 #include <stdlib.h>
 #include <math.h>
 
+
 #include "gl_wrappers/gl_wrappers.h"
 #include "init_render.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+#include <functional>
+static std::function <void()> loop;
+#ifdef __EMSCRIPTEN__
+static void main_loop() {
+    loop();
+}
+#endif
 
 struct Click {
     double x, y;
@@ -56,9 +67,10 @@ int main() {
     init();
     struct RenderParams render_params = {};
     render_params.which = 25;
+    render_params.user_use2 = 0;
     // getchar();
     glfwSetScrollCallback(window, scroll_callback);
-    for (int k = 0; !glfwWindowShouldClose(window); k++) {
+    loop = [&] {
         if (left_click.pressed) {
             render_params.user_use = 1;
             render_params.user_x = left_click.x;
@@ -75,9 +87,20 @@ int main() {
             render_params.which += 1;
         else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
             render_params.which -= 1;
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+            render_params.user_use2 = 1;
+        else if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+            render_params.user_use2 = 0;
         click_update(&left_click, window);
         glfwSwapBuffers(window);
+    };
+    #ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(main_loop, 0, true);
+    #else
+    for (int k = 0; !glfwWindowShouldClose(window); k++) {
+        loop();
     }
+    #endif
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
