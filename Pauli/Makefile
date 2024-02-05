@@ -31,7 +31,7 @@ ${TARGET}: ${OBJECTS} ${SHADERS}
 	${CPP_COMPILE} ${FLAGS} -o $@ ${OBJECTS} ${LIBS}
 
 ${WEB_TARGET}: ${SOURCES} ${SHADERS}
-	emcc -o $@ ${SOURCES} ${INCLUDE} -v -s WASM=1 -s USE_GLFW=3 -s FULL_ES3=1 \
+	emcc -o $@ ${SOURCES} ${INCLUDE} -O3 -v -s WASM=1 -s USE_GLFW=3 -s FULL_ES3=1 \
 	-s TOTAL_MEMORY=100MB -s LLD_REPORT_UNDEFINED --embed-file shaders
 
 ${OBJECTS}: ${C_SOURCES} ${CPP_SOURCES}
