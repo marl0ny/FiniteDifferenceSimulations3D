@@ -3,3 +3,5 @@ program
 *.clangd
 *.DS_Store
 *~
+.*
+!.gitignore
