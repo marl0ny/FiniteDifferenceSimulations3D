@@ -1,0 +1,3 @@
+# Stable Fluid Implementation in 3D
+
+Yet another [real-time interactive simulation](https://marl0ny.github.io/FiniteDifferenceSimulations3D/StableFluids3D/index.html) of [Stam's stable fluids](https://doi.org/10.1145/311535.311548). This web program was made by mainly following this [GPU Gems 3 chapter](https://developer.nvidia.com/gpugems/gpugems3/part-v-physics-simulation/chapter-30-real-time-simulation-and-rendering-3d-fluids) by Crane et al. Another major inspiration is PavelDoGreat's [WebGL Fluid Simulation](https://paveldogreat.github.io/WebGL-Fluid-Simulation/).

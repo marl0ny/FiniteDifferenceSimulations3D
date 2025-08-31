@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+	<head>
+        <style>
+            h2 {font-family:Arial, Helvetica, sans-serif; }
+            label {font-family:Arial, Helvetica, sans-serif; }
+			text {font-family:Arial, Helvetica, sans-serif; }
+        </style>
+    </head>
+	<body style="background-color: rgb(255, 255, 255);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+            <div style="grid-column: 1;">
+                <!--
+                <label><a id="aLink" style="color: rgb(100, 100, 100); text-align: center; /*text-decoration-line: none;*/">Source</a></label><br>
+                -->
+                <label for="stepsPerFrame" id="stepsPerFrameLabel">Updates/frame</label>
+                <br>
+                <input type="range" id="stepsPerFrame" min="0" max="4.0" value="1.0"
+                    style="width: 95%;">
+                <br>
+                <label id="fps">fps: </label>
+                <br>
+                <button type="button"
+					aria-pressed="true" id="rotateViewButton">Rotate view</button>
+				<br>
+                <button type="button"
+					aria-pressed="true" id="addBlobButton">Add blob</button>
+				<br>
+                <label for="sketchWidth" id="sketchWidthLabel">Sketch size</label>
+				<br>
+                <input type="range" id="sketchWidth" name="sketchWidth"
+                min="0" max="100" value="75"
+                style="width: 95%;"/>
+                <br>
+                <label for="sketchDepth" id="sketchDepthLabel">Sketch depth</label>
+				<br>
+                <input type="range" id="sketchDepth" name="sketchDepth"
+                min="-40" max="40" value="0"
+                style="width: 95%;"/>
+                <br>
+                <label id="viewModeLabel" for="viewMode">View type: 
+                </label>
+                <select id="viewMode">
+                    <option value=1 selected>Planar slices</option>
+                    <option value=2>Volume render</option>
+                </select>
+                <br>
+                <hr style="width: 95%; justify-self: left;"/>
+                <div id="volumeRenderControls">
+                    <label style="font-weight: bold;">Volume render controls</label><br>
+                    <!--<label for="volumeRenderColorBrightness">Colour brightness</label>
+                    <input type="range" 
+                    id="volumeRenderColorBrightness" min="0" max="100" value="10" style="width: 95%;"/>
+                    <br>
+                    <label for="volumeRenderAlphaBrightness">Alpha brightness</label>
+                    <input type="range" id="volumeRenderAlphaBrightness" 
+                    min="0" max="100" value="20" style="width: 95%;"/><br>!-->
+                    <label for="numberOfSlices" id="numberOfSlicesLabel">Number of slices</label>
+                    <input type="range" 
+                    id="numberOfSlices" min="64" max="2048" value="512" step="64" style="width: 95%;"/>
+                    <br>
+                    <label for="sliceSideWidth" id="sliceSideWidthLabel">Slice size</label>
+                    <!--
+                    <input type="range" 
+                    id="sliceSideWidth" min="64" max="2048" value="320" step="64" style="width: 95%;"/>
+                    -->
+                    <input type="range" 
+                    id="sliceSideWidth" min="64" max="2048" value="256" step="64" style="width: 95%;"/>
+                    <br>
+                </div>
+                <hr style="width: 95%; justify-self: left;"/>
+                <div id="planarSlicesControls">
+                    <label style="font-weight: bold;">Planar slices controls</label><br>
+                    <label for="zIndex" id="zIndexLabel">xy slice - z offset:</label>
+                    <br>
+                    <input type="range" id="zIndex"
+                        min="0" max="255" value="127"
+                    style="width: 95%;"/>
+                    <br>
+                    <label for="xIndex" id="xIndexLabel">yz slice - x offset:</label>
+                    <br>
+                    <input type="range" id="xIndex"
+                        min="0" max="255" value="127"
+                    style="width: 95%;"/>
+                    <br>
+                    <label for="yIndex" id="yIndexLabel">zx slice - y offset:</label>
+                    <br>
+                    <input type="range" id="yIndex"
+                        min="0" max="255" value="127"
+                    style="width: 95%;"/>
+                    <br>
+                </div>
+            </div>
+            <div style="grid-column: 2; padding: 10px;">
+                <canvas style="touch-action: none; 
+                    background-color: rgb(50.0, 50.0, 50.0);
+                    text-align: center;"
+                    id="sketchCanvas">
+                </canvas>
+            </div>
+            <div style="grid-column: 3;">
+                <div>
+                    <label for="dtSlider" id="dtSliderLabel">Step count</label>
+                    <br>
+                    <input type="range" id="dtSlider"
+                        min="0.01" max="0.5" value="0.5" step="0.01"
+                    style="width: 95%;"/>
+                </div>
+                <div>
+                    <hr/>
+                    <label style="font-weight: bold;">Advection</label><br>
+                    <div>
+                        <input type="checkbox" id="useMacCormackSchemeCheckbox" checked>
+                        <label>
+                            MacCormack advection scheme
+                        </label>
+                        </input>
+                    </div>
+                </div>
+                <div>
+                    <hr/>
+                    <label style="font-weight: bold;">Velocity dissipation</label><br>
+                    <div>
+                        <label for="velocityDiffusionStepsSlider" id="velocityDiffusionStepsSliderLabel">Step count</label>
+                            <br>
+                            <input type="range" id="velocityDiffusionStepsSlider"
+                                min="2" max="50" value="3"
+                            style="width: 95%;"/>
+                    </div>
+                    <div>
+                        <label for="velocityDiffusionStrengthSlider" id="velocityDiffusionStrengthSliderLabel">Strength</label>
+                            <br>
+                            <input type="range" id="velocityDiffusionStrengthSlider"
+                                min="0.0005" max="0.05" value="0.001" step="0.00001"
+                            style="width: 95%;"/>
+                    </div>
+                    </div>
+                <div>
+                    <hr/>
+                    <label style="font-weight: bold;">Material dissipation</label><br>
+                    <div>
+                        <label for="materialDiffusionStepsSlider" id="materialDiffusionStepsSliderLabel">Step count</label>
+                            <br>
+                            <input type="range" id="materialDiffusionStepsSlider"
+                                min="2" max="50" value="3"
+                            style="width: 95%;"/>
+                    </div>
+                    <div>
+                        <label for="materialDiffusionStrengthSlider" id="materialDiffusionStrengthSliderLabel">Strength</label>
+                            <br>
+                            <input type="range" id="materialDiffusionStrengthSlider"
+                                min="0.0" max="0.0004" value="0.00004" step="0.00001"
+                            style="width: 95%;"/>
+                    </div>
+                </div>
+                <div>
+                    <hr/>
+                    <div>
+                        <label style="font-weight: bold;">Pressure</label><br>
+                        <label for="pressureStepsSlider" id="pressureStepsSliderLabel">Pressure solve step count</label>
+                            <br>
+                            <input type="range" id="pressureStepsSlider"
+                                min="5" max="50" value="20"
+                            style="width: 95%;"/>
+                    </div>
+                    <label>
+                        (Increasing the number of steps improves the quality, at the cost of performance.)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="./main.js"></script>
+    </body>
+</html>
